@@ -1,0 +1,88 @@
+@Metadata.layer: #CORE
+@UI.headerInfo: {
+  typeName: 'Flight',
+  typeNamePlural: 'Flights',
+  title: { type: #STANDARD, value: 'FlightID' },
+  description: { type: #STANDARD, value: 'Status' }
+}
+annotate entity ZC_FLIGHTLEG with
+{
+  @UI.facet: [ {
+    id: 'FlightDetails', purpose: #STANDARD, type: #IDENTIFICATION_REFERENCE,
+    label: 'Flight Details', position: 10 } ]
+
+  @EndUserText.label: 'Flight'
+  @UI.lineItem: [
+    { position: 10, importance: #HIGH },
+    { type: #FOR_ACTION, dataAction: 'escalate', label: 'Escalate' },
+    { type: #FOR_ACTION, dataAction: 'resolve',  label: 'Resolve' } ]
+  @UI.identification: [
+    { position: 10 },
+    { type: #FOR_ACTION, dataAction: 'escalate', label: 'Escalate' },
+    { type: #FOR_ACTION, dataAction: 'resolve',  label: 'Resolve' } ]
+  @UI.selectionField: [ { position: 10 } ]
+  FlightID;
+
+  @EndUserText.label: 'From'
+  @UI.lineItem: [ { position: 20, importance: #HIGH } ]
+  @UI.identification: [ { position: 20 } ]
+  @UI.selectionField: [ { position: 20 } ]
+  OriginAirport;
+
+  @EndUserText.label: 'To'
+  @UI.lineItem: [ { position: 30, importance: #HIGH } ]
+  @UI.identification: [ { position: 30 } ]
+  @UI.selectionField: [ { position: 30 } ]
+  DestinationAirport;
+
+  @EndUserText.label: 'Scheduled Departure'
+  @UI.lineItem: [ { position: 40, importance: #MEDIUM } ]
+  @UI.identification: [ { position: 40 } ]
+  ScheduledDeparture;
+
+  @EndUserText.label: 'Scheduled Arrival'
+  @UI.lineItem: [ { position: 50, importance: #LOW } ]
+  @UI.identification: [ { position: 50 } ]
+  ScheduledArrival;
+
+  @EndUserText.label: 'Actual Departure'
+  @UI.lineItem: [ { position: 60, importance: #LOW } ]
+  @UI.identification: [ { position: 60 } ]
+  ActualDeparture;
+
+  @EndUserText.label: 'Actual Arrival'
+  @UI.lineItem: [ { position: 70, importance: #LOW } ]
+  @UI.identification: [ { position: 70 } ]
+  ActualArrival;
+
+  @EndUserText.label: 'Delay (min)'
+  @UI.lineItem: [ { position: 80, importance: #HIGH, criticality: 'RiskCriticality' } ]
+  @UI.identification: [ { position: 80, criticality: 'RiskCriticality' } ]
+  DelayMinutes;
+
+  @EndUserText.label: 'Risk'
+  @UI.lineItem: [ { position: 90, importance: #HIGH, criticality: 'RiskCriticality' } ]
+  @UI.identification: [ { position: 90, criticality: 'RiskCriticality' } ]
+  @UI.selectionField: [ { position: 40 } ]
+  RiskLevel;
+
+  @EndUserText.label: 'Status'
+  @UI.lineItem: [ { position: 100, importance: #HIGH } ]
+  @UI.identification: [ { position: 100 } ]
+  @UI.selectionField: [ { position: 50 } ]
+  Status;
+
+  @UI.hidden: true
+  RiskCriticality;
+
+  @UI.hidden: true
+  LocalCreatedBy;
+  @UI.hidden: true
+  LocalCreatedAt;
+  @UI.hidden: true
+  LocalLastChangedBy;
+  @UI.hidden: true
+  LocalLastChangedAt;
+  @UI.hidden: true
+  LastChangedAt;
+}

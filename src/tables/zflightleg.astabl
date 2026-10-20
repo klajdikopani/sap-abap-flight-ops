@@ -1,0 +1,23 @@
+@EndUserText.label : 'Flight Leg'
+@AbapCatalog.enhancement.category : #NOT_EXTENSIBLE
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #RESTRICTED
+define table zflightleg {
+  key client            : abap.clnt not null;
+  key flight_id         : abap.char(10) not null;
+  origin_airport        : abap.char(3);
+  destination_airport   : abap.char(3);
+  scheduled_departure   : abap.utclong;
+  scheduled_arrival     : abap.utclong;
+  actual_departure      : abap.utclong;
+  actual_arrival        : abap.utclong;
+  delay_minutes         : abap.int4;
+  risk_level            : abap.char(10);
+  status                : abap.char(10);
+  local_created_by      : abp_creation_user;
+  local_created_at      : abp_creation_tstmpl;
+  local_last_changed_by : abp_locinst_lastchange_user;
+  local_last_changed_at : abp_locinst_lastchange_tstmpl;
+  last_changed_at       : abp_lastchange_tstmpl;
+}

@@ -1,0 +1,75 @@
+managed implementation in class ZBP_R_FLIGHTLEG unique;
+strict ( 2 );
+with draft;
+extensible;
+
+define behavior for ZR_FLIGHTLEG alias ZrFlightleg
+persistent table ZFLIGHTLEG
+extensible
+draft table ZFLIGHTLEG_D
+etag master LocalLastChangedAt
+lock master total etag LastChangedAt
+authorization master( global )
+{
+  field ( mandatory : create ) FlightID;
+
+  // system-filled or calculated fields: the user can't type in them
+  field ( readonly )
+   LocalCreatedBy,
+   LocalCreatedAt,
+   LocalLastChangedBy,
+   LocalLastChangedAt,
+   LastChangedAt,
+   DelayMinutes,
+   RiskLevel,
+   Status,
+   RiskCriticality;
+
+  field ( readonly : update ) FlightID;
+
+  create;
+  update;
+  delete;
+
+  // determinations = auto-calculate values when something changes
+  determination setDefaults on modify { create; }
+  determination calculateDelay on modify { create; field ScheduledDeparture, ActualDeparture; }
+  determination calculateRisk on modify { field DelayMinutes; }
+
+  // validations = block saving when data is wrong
+  validation checkDates on save { create; field ScheduledDeparture, ScheduledArrival; }
+  validation checkAirports on save { create; field OriginAirport, DestinationAirport; }
+
+  // actions = buttons on the Fiori page
+  action escalate result [1] $self;
+  action resolve result [1] $self;
+
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Edit;
+  draft action Resume;
+  draft determine action Prepare
+  {
+    validation checkDates;
+    validation checkAirports;
+  }
+
+  mapping for ZFLIGHTLEG corresponding extensible
+  {
+    FlightID = FLIGHT_ID;
+    OriginAirport = ORIGIN_AIRPORT;
+    DestinationAirport = DESTINATION_AIRPORT;
+    ScheduledDeparture = SCHEDULED_DEPARTURE;
+    ScheduledArrival = SCHEDULED_ARRIVAL;
+    ActualDeparture = ACTUAL_DEPARTURE;
+    ActualArrival = ACTUAL_ARRIVAL;
+    DelayMinutes = DELAY_MINUTES;
+    RiskLevel = RISK_LEVEL;
+    Status = STATUS;
+    LocalCreatedBy = LOCAL_CREATED_BY;
+    LocalCreatedAt = LOCAL_CREATED_AT;
+    LocalLastChangedBy = LOCAL_LAST_CHANGED_BY;
+    LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
+    LastChangedAt = LAST_CHANGED_AT;
+  }
+}
